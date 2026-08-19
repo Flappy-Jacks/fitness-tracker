@@ -1,0 +1,74 @@
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Numeric
+from sqlalchemy.orm import DeclarativeBase, relationship
+from sqlalchemy import Enum
+import enum
+from sqlalchemy import UniqueConstraint
+
+class WorkoutSplit(enum.Enum):
+    push = "push"
+    pull = "pull"
+    legs = "legs"
+    upper = "upper"
+    lower = "lower"
+    full = "full"
+    cardio = "cardio"
+
+class Base(DeclarativeBase):
+    pass
+
+class Users(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
+
+    workouts = relationship("Workout", back_populates="user")
+
+
+class Workout(Base):
+    __tablename__ = "workout"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    workout_date = Column(Date)
+    split = Column(Enum(WorkoutSplit), nullable=True)
+
+    __table_args__ = (UniqueConstraint("user_id", "workout_date", name="workout_user_date_unique"),)
+
+    workout_exercises = relationship("Workout_exercise", back_populates="workout", cascade="all, delete-orphan")    
+    user = relationship("Users", back_populates="workouts")
+
+class Exercise(Base):
+    __tablename__ = "exercise"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    muscle_group = Column(String)
+
+
+class Workout_exercise(Base):
+    __tablename__ = "workout_exercise"
+
+    id = Column(Integer,primary_key=True)
+    workout_id = Column(Integer, ForeignKey("workout.id"))
+    exercise_id = Column(Integer, ForeignKey("exercise.id"))
+    order_index = Column(Integer)
+    notes = Column(String, nullable=True)
+
+    workout = relationship("Workout", back_populates="workout_exercises")
+    exercise = relationship("Exercise")
+    set_logs = relationship("Set_log", back_populates="workout_exercise", cascade="all, delete-orphan")
+
+
+class Set_log(Base):
+    __tablename__ = "set_log"
+
+    id = Column(Integer, primary_key=True)
+    workout_exercise_id = Column(Integer, ForeignKey("workout_exercise.id"))
+    set_number = Column(Integer)
+    reps = Column(Integer)
+    weight = Column(Numeric)
+
+    workout_exercise = relationship("Workout_exercise", back_populates="set_logs")
