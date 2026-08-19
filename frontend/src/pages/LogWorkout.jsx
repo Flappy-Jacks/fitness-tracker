@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { mockData } from "./mockData";
-import WorkoutExerciseCard from "../components/WorkoutExerciseCard.jsx";
 import StartWorkout from "../components/StartWorkout.jsx";
 import History from "./History.jsx";
 import WorkoutLogs from "../components/WorkoutLogs.jsx";

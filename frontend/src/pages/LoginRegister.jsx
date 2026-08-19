@@ -46,7 +46,7 @@ export function LoginRegister() {
 
       localStorage.setItem("token", data.access_token)
       localStorage.setItem("user", JSON.stringify(data.user))
-      navigate("/")
+      navigate("/log")
 
     } catch (error) {
       setError(error.message)
@@ -56,57 +56,59 @@ export function LoginRegister() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="name@example.com"
-            required
-          />
-        </Field>
-
-        <Field>
-          <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Password"
-            required
-          />
-        </Field>
-
-        {error && (
-          <p className="text-sm text-red-500">
-            {error}
-          </p>
-        )}
-
-        <Field orientation="horizontal">
-          <Button
-            type="reset"
-            variant="outline"
-            onClick={() => {
-              setEmail("")
-              setPassword("")
-              setError("")
-            }}
-          >
-            Reset
-          </Button>
-
-          <Button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </Button>
-        </Field>
-      </FieldGroup>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="name@example.com"
+              required
+            />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Password"
+              required
+            />
+          </Field>
+          {error && (
+            <p className="text-sm text-red-500">
+              {error}
+            </p>
+          )}
+          <Field orientation="horizontal">
+            <Button
+              type="reset"
+              variant="outline"
+              onClick={() => {
+                setEmail("")
+                setPassword("")
+                setError("")
+              }}
+            >
+              Reset
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+      
+          </Field>
+        </FieldGroup>
+      </form>
+      <Button onClick={() => navigate("/register")} disabled={loading}>
+            Sign Up
+      </Button>
+    </div>
   )
 }
 
