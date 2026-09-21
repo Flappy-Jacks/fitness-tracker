@@ -110,13 +110,12 @@ async function handleAddExercise(){
   });
     // const newWorkoutExercise = await response.json();
 
-    const refresh = await apiFetch(
-      `/users/workouts`
+    const res = await apiFetch(
+      `/users/workouts?workout_date=${workout.workout_date}`
     );
 
-    const updatedWorkout = await refresh.json();
-
-    setWorkout(updatedWorkout);
+    const data = await res.json();
+    setWorkout(data);
     setSelectedExercise("");
 }
 
