@@ -59,6 +59,9 @@ class WorkoutExerciseDetail(BaseModel):
     set_logs: list[SetlogResponse] = []
     class Config:
         from_attributes = True
+        
+class WorkoutExerciseNoteUpdate(BaseModel):
+    notes: Optional[str] = None
 
 class SetlogCreate(BaseModel):
     workout_exercise_id: int

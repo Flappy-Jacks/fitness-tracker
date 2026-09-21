@@ -1,7 +1,7 @@
 import React from 'react'
 import WorkoutExerciseCard from './WorkoutExerciseCard'
 
-const WorkoutLogs = ( {workout, handleDeleteWorkout, setSelectedExercise, selectExercise, exercises, handleAddExercise, handleSetCreated, handleSetDeleted, handleSetUpdated, handleWorkoutExerciseDeleted } ) => {
+const WorkoutLogs = ( {workout, handleDeleteWorkout, setSelectedExercise, selectExercise, exercises, handleAddExercise, handleSetCreated, handleSetDeleted, handleSetUpdated, handleWorkoutExerciseDeleted, handleNoteUpdated } ) => {
   
   const getDayName = (str) => {
     const date = new Date(str);
@@ -12,7 +12,7 @@ const WorkoutLogs = ( {workout, handleDeleteWorkout, setSelectedExercise, select
 
   
   return (
-    <div className="w-full flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5 py-6">
       {/* Date and delete */}
       <div className="flex justify-between">
         <div className='flex-col'>
@@ -57,6 +57,7 @@ const WorkoutLogs = ( {workout, handleDeleteWorkout, setSelectedExercise, select
           onSetDeleted = {handleSetDeleted}
           onSetUpdated = {handleSetUpdated}
           onWorkoutExerciseDeleted = {handleWorkoutExerciseDeleted}
+          onNoteUpdated = {handleNoteUpdated}
         />
       ))}
       </div>

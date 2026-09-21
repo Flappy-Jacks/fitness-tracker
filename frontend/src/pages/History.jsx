@@ -38,7 +38,7 @@ const History = ( {handleFetchWorkoutDate, historyRefreshKey, onTodayWorkout} ) 
       {workoutDates.map((workoutDate) => (
         <button key={workoutDate.id} onClick={() => {handleFetchWorkoutDate(workoutDate.date)}} className='px-5 h-20 w-[250px] bg-slate-200 outline-2 outline-white p-2'>
           <div className='flex flex-col items-start text-black'>
-            <p className='font-montserrat font-medium text-lg'>{workoutDate.split}</p>
+            <p className='font-montserrat font-medium text-xl first-letter:uppercase'>{workoutDate.split}</p>
             <p className='font-montserrat text-xs'>{getDayName(workoutDate.date)}{" "}-{" "}{workoutDate.date}</p>
           </div>
         </button>

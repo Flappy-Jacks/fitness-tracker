@@ -10,8 +10,18 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <nav className="">
-        <Link to="/log">Log Workout</Link> | <Link to="/history">History</Link> | <Link to="/">Login</Link> | <LogoutButton/>
+      <nav className="h-18 shadow-lg w-full flex justify-between items-center px-30">
+        LOGO
+        
+        <div className="flex justify-between max-w-[50%] flex-1">
+          <Link to="/log">Logs</Link>
+          <Link to="/history">History</Link>
+          <Link to="/">Progress</Link>
+          <Link to="/">Diet</Link>
+          <Link to="/">Coach</Link>
+        </div>
+        
+        <LogoutButton/>
       </nav>
 
       <Routes>

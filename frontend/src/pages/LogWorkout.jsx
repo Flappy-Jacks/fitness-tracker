@@ -94,6 +94,15 @@ async function handleFetchWorkoutDate(workoutDate) {
   setWorkout(data);
 }
 
+  function handleNoteUpdated(workoutExerciseId, newNotes) {
+    setWorkout((prev) => ({
+      ...prev,
+      workout_exercises: prev.workout_exercises.map((we) =>
+        we.id === workoutExerciseId ? { ...we, notes: newNotes } : we
+      ),
+    }));
+  }
+
 async function handleAddExercise(){
   const response = await apiFetch(`/workout-exercise`,{
     method: "POST",
@@ -141,7 +150,7 @@ async function handleAddExercise(){
   }
 
   return (
-    <div className="min-h-screen w-full py-6 flex flex-row justify-between">
+    <div className="min-h-screen w-full flex flex-row justify-between">
       
       {/* history bar: rightmost */}
       <div className="w-64 shrink-0">
@@ -171,6 +180,7 @@ async function handleAddExercise(){
           handleSetDeleted={handleSetDeleted}
           handleSetUpdated={handleSetUpdated}
           handleWorkoutExerciseDeleted={handleWorkoutExerciseDeleted}
+          handleNoteUpdated={handleNoteUpdated}
         ></WorkoutLogs>
       </div>
 
