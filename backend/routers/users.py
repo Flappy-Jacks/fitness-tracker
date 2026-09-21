@@ -17,14 +17,14 @@ router = APIRouter(
 @router.get("/workouts/history")
 def get_user_workout_history(current_user: models.Users = Depends(get_current_user), db: Session = Depends(get_db)):
     workouts = (
-        db.query(models.Workout.id, models.Workout.workout_date)
+        db.query(models.Workout.id, models.Workout.workout_date, models.Workout.split)
         .filter(models.Workout.user_id == current_user.id)
         .order_by(models.Workout.workout_date.desc())
         .all()
     )
 
     return [
-        {"id": workout.id, "date": workout.workout_date}
+        {"id": workout.id, "date": workout.workout_date, "split": workout.split.value if workout.split else None}
         for workout in workouts
     ]
 
@@ -51,7 +51,6 @@ def get_user_workouts_full(
     )
     return workout
 
-    return workout
 
 @router.get("/{user_id}", response_model=schemas.UserResponse)
 def get_user(user_id: int, db: Session = Depends(get_db)):

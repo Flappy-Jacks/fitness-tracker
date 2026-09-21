@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import date
 from typing import Optional
 from decimal import Decimal
+from models import WorkoutSplit
 
 class UserCreate(BaseModel):
     name: str
@@ -77,6 +78,7 @@ class SetlogUpdate(BaseModel):
 class WorkoutFullDetail(BaseModel):
     id: int
     workout_date: date
+    split: WorkoutSplit | None = None
     workout_exercises: list[WorkoutExerciseDetail] = []
     class Config:
             from_attributes = True

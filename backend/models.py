@@ -4,6 +4,7 @@ from sqlalchemy import Enum
 import enum
 from sqlalchemy import UniqueConstraint
 
+
 class WorkoutSplit(enum.Enum):
     push = "push"
     pull = "pull"

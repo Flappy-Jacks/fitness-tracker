@@ -9,8 +9,8 @@ function App() {
   
 
   return (
-    <div className="pt-4 flex justify-center grid">
-      <nav>
+    <div className="flex flex-col justify-center items-center">
+      <nav className="">
         <Link to="/log">Log Workout</Link> | <Link to="/history">History</Link> | <Link to="/">Login</Link> | <LogoutButton/>
       </nav>
 

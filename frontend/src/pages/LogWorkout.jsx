@@ -80,15 +80,6 @@ function handleWorkoutExerciseDeleted(workoutExerciseId) {
     }));
   };
 
-// function getLocalDateString(d = new Date()) {
-//   const year = d.getFullYear();
-//   const month = String(d.getMonth() + 1).padStart(2, "0");
-//   const day = String(d.getDate()).padStart(2, "0");
-//   return `${year}-${month}-${day}`;
-// }
-
-// const isToday = workout && workout.workout_date === getLocalDateString();
-
 async function handleDeleteWorkout(){
   await apiFetch(`/workouts/${workout.id}`, { method: "DELETE" });
   setWorkout(null);
@@ -139,9 +130,11 @@ async function handleAddExercise(){
 
   if (workout === null) {
     return (
-      <div className="pt-2 justify-center flex gap-5 text-gray-500">
-        <History handleFetchWorkoutDate={handleFetchWorkoutDate} historyRefreshKey={historyRefreshKey} onTodayWorkout={setHasTodayWorkout}></History>
-        <div>
+      <div className="min-h-screen w-full py-6 flex flex-row justify-between">
+        <div className="w-64 shrink-0">
+          <History handleFetchWorkoutDate={handleFetchWorkoutDate} historyRefreshKey={historyRefreshKey} onTodayWorkout={setHasTodayWorkout}></History>
+        </div>
+        <div className="flex-1 px-8">
           <StartWorkout onWorkoutCreated={handleWorkoutCreated}/>
         </div>
       </div>
@@ -149,9 +142,19 @@ async function handleAddExercise(){
   }
 
   return (
-    <div className="pt-2 justify-center flex gap-5 text-gray-500">
-      <History handleFetchWorkoutDate={handleFetchWorkoutDate} historyRefreshKey={historyRefreshKey} onTodayWorkout={setHasTodayWorkout}></History>
-      <div>
+    <div className="min-h-screen w-full py-6 flex flex-row justify-between">
+      
+      {/* history bar: rightmost */}
+      <div className="w-64 shrink-0">
+        <History 
+          handleFetchWorkoutDate={handleFetchWorkoutDate}
+          historyRefreshKey={historyRefreshKey} 
+          onTodayWorkout={setHasTodayWorkout}>  
+        </History>
+      </div>
+
+      {/* log section: center */}
+      <div className="flex-1 px-8">
       {!hasTodayWorkout && (
         <div className="mb-4">
           <p>Viewing {workout.workout_date} — not today's workout.</p>
@@ -171,6 +174,7 @@ async function handleAddExercise(){
           handleWorkoutExerciseDeleted={handleWorkoutExerciseDeleted}
         ></WorkoutLogs>
       </div>
+
     </div>
   );
 }
