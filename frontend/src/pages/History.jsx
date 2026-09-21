@@ -3,15 +3,27 @@ import { apiFetch } from "@/api";
 
 
 
-const History = ( {handleFetchWorkoutDate} ) => {
+const History = ( {handleFetchWorkoutDate, historyRefreshKey, onTodayWorkout} ) => {
   const [workoutDates, setWorkoutDates] = useState([]);
+    function getLocalDateString(d = new Date()) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   useEffect(() => {
     apiFetch(`/users/workouts/history`)
       .then((res) => res.json())
-      .then((data) => setWorkoutDates(data))
-      .catch((error) => console.error("Error fetching workout history:", error));
-  }, []);
+      .then((data) => {
+        setWorkoutDates(data);
+
+        onTodayWorkout(
+          data.some(w => w.date === getLocalDateString())
+        );
+      })
+      .catch((error) => console.error(error));
+  }, [historyRefreshKey]);
 
   return (
     <div>

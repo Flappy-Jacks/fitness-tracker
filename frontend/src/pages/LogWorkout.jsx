@@ -11,6 +11,8 @@ function LogWorkout() {
   const [workout, setWorkout] = useState(undefined);
   const [exercises, setExercises] = useState([]);
   const [selectExercise, setSelectedExercise] = useState("");
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
+  const [hasTodayWorkout, setHasTodayWorkout] = useState(false);
 
   useEffect(() => {
     apiFetch("/users/workouts")
@@ -20,7 +22,7 @@ function LogWorkout() {
 
   useEffect(() => {
     fetch(`${API}/exercises`)
-      .then((res) => res.json()) // Fixed: added () to json()
+      .then((res) => res.json())
       .then((data) => setExercises(data))
       .catch((err) => console.error("Failed to apiFetch exercises:", err));
   }, []);
@@ -30,6 +32,7 @@ function handleWorkoutCreated(newWorkout) {
     ...newWorkout,
     workout_exercises: [],
   });
+  setHistoryRefreshKey((k) => k + 1); // tell History something changed
 }
 
 function handleSetCreated(newSet) {
@@ -77,11 +80,19 @@ function handleWorkoutExerciseDeleted(workoutExerciseId) {
     }));
   };
 
+// function getLocalDateString(d = new Date()) {
+//   const year = d.getFullYear();
+//   const month = String(d.getMonth() + 1).padStart(2, "0");
+//   const day = String(d.getDate()).padStart(2, "0");
+//   return `${year}-${month}-${day}`;
+// }
+
+// const isToday = workout && workout.workout_date === getLocalDateString();
+
 async function handleDeleteWorkout(){
-  await apiFetch(`/workouts/${workout.id}`, {
-    method: "DELETE",
-  });
+  await apiFetch(`/workouts/${workout.id}`, { method: "DELETE" });
   setWorkout(null);
+  setHistoryRefreshKey((k) => k + 1); // tell History something changed
 }
 
 async function handleFetchWorkoutDate(workoutDate) {
@@ -129,7 +140,7 @@ async function handleAddExercise(){
   if (workout === null) {
     return (
       <div className="pt-2 justify-center flex gap-5 text-gray-500">
-        <History handleFetchWorkoutDate={handleFetchWorkoutDate}></History>
+        <History handleFetchWorkoutDate={handleFetchWorkoutDate} historyRefreshKey={historyRefreshKey} onTodayWorkout={setHasTodayWorkout}></History>
         <div>
           <StartWorkout onWorkoutCreated={handleWorkoutCreated}/>
         </div>
@@ -139,8 +150,14 @@ async function handleAddExercise(){
 
   return (
     <div className="pt-2 justify-center flex gap-5 text-gray-500">
-      <History handleFetchWorkoutDate={handleFetchWorkoutDate}></History>
+      <History handleFetchWorkoutDate={handleFetchWorkoutDate} historyRefreshKey={historyRefreshKey} onTodayWorkout={setHasTodayWorkout}></History>
       <div>
+      {!hasTodayWorkout && (
+        <div className="mb-4">
+          <p>Viewing {workout.workout_date} — not today's workout.</p>
+          <StartWorkout onWorkoutCreated={handleWorkoutCreated} />
+        </div>
+      )}
         <WorkoutLogs
           workout={workout}
           handleDeleteWorkout={handleDeleteWorkout}
