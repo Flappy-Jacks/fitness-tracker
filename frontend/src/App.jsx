@@ -4,10 +4,12 @@ import History from "./pages/History";
 import LoginRegister from "./pages/LoginRegister";
 import LogoutButton from "./components/LogoutButton";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
+
 
 function App() {
   const location = useLocation();
-  const hideNavbar = ["/", "/register"].includes(location.pathname);
+  const hideNavbar = ["/", "/register", "/verify-email"].includes(location.pathname);
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -32,6 +34,7 @@ function App() {
         <Route path="/history" element={<History />} />
         <Route path="/log" element={<LogWorkout />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </div>
   );
