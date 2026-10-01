@@ -10,6 +10,28 @@ export function LoginRegister() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  async function handleResendVerification() {
+  try {
+    const response = await fetch(`${API}/auth/resend-verification`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Failed to resend email");
+    }
+
+    setError(data.message);
+  } catch (error) {
+    setError(error.message);
+  }
+
+}
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -166,14 +188,24 @@ export function LoginRegister() {
                 </div>
 
                 {/* Error */}
-                {error && (
-                  <p
-                    role="alert"
-                    className="text-sm text-red-500"
-                  >
-                    {error}
-                  </p>
-                )}
+                <div>
+                  {error && (
+                    <p
+                      role="alert"
+                      className="text-sm text-red-500"
+                    >
+                      {error}
+                    </p>
+                  )}
+                  {error === "Please verify your email before logging in" && (
+                    <div className="text-sm flex gap-2">
+                      <p>Didn't get the link?</p>
+                      <button onClick={handleResendVerification} className="cursor-pointer text-primary hover:underline">
+                        Resend verification email
+                      </button>
+                    </div>
+                  )}
+                </div>
 
                 {/* Login */}
                 <button
