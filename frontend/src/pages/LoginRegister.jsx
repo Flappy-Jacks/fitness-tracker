@@ -48,8 +48,8 @@ export function LoginRegister() {
   }
 
   return (
-    <div className="min-h-screen w-full px-6 py-6 md:px-10 lg:px-16">
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-7xl flex-col">
+    <div className="w-full px-6 py-6 md:px-10 lg:px-16 ">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col">
 
         {/* Top row */}
         <header className="flex w-full items-center justify-between">

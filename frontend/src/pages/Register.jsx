@@ -39,26 +39,94 @@ export function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="name">Name</FieldLabel>
-          <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </Field>
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        <Button type="submit" disabled={loading}>
-          {loading ? "Creating account..." : "Register"}
-        </Button>
-      </FieldGroup>
-    </form>
+    <div className="h-[calc(100dvh-4rem)] flex justify-center w-full px-6 py-6 md:px-10 lg:px-16">
+      <form
+        onSubmit={handleSubmit}
+        className="flex max-w-70 flex-col gap-4"
+      >
+        {/* Name */}
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="name"
+            className="font-bold"
+          >
+            Name
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="John Doe"
+            required
+            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        {/* Email */}
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="email"
+            className="font-bold"
+          >
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="name@example.com"
+            autoComplete="email"
+            required
+            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="password"
+            className="font-bold"
+          >
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Password"
+            autoComplete="current-password"
+            required
+            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+
+        {/* Error */}
+        {error && (
+          <p
+            role="alert"
+            className="text-sm text-red-500"
+          >
+            {error}
+          </p>
+        )}
+
+        {/* Login */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-lg bg-primary py-2.5 font-bold text-white outline outline-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading ? "Creating account..." : "Create account"}
+        </button>
+      </form>
+    </div> 
   )
 }
 

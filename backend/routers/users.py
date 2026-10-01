@@ -6,7 +6,7 @@ import models
 import schemas
 from database import get_db
 from fastapi import Query
-from auth import get_current_user
+from auth import get_current_user, create_verification_token
 
 router = APIRouter(
     prefix="/users",
@@ -68,14 +68,28 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     ).decode("utf-8")
 
     new_user = models.Users(
-        name=user.name,
-        email=user.email,
-        password_hash=hashed
+    name=user.name,
+    email=user.email,
+    password_hash=hashed,
+    email_verified=False
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    token, token_hash, expires_at = create_verification_token()
+
+    print("VERIFICATION TOKEN:", token)
+    verification = models.EmailVerificationToken(
+        user_id=new_user.id,
+        token_hash=token_hash,
+        expires_at=expires_at,
+        used=False
+    )
+
+    db.add(verification)
+    db.commit()
 
     return new_user
 

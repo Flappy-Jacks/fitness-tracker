@@ -7,11 +7,24 @@ from database import get_db
 import models
 import os
 
+import hashlib
+import secrets
+from datetime import datetime, timedelta, timezone
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+
+def create_verification_token():
+    token = secrets.token_urlsafe(32)
+
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
+
+    expires_at = datetime.utcnow() + timedelta(hours=24)
+
+    return token, token_hash, expires_at
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:

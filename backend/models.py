@@ -1,9 +1,30 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, Numeric
-from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy import Enum
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Date,
+    Enum,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    UniqueConstraint,
+)
+from sqlalchemy.orm import relationship
 import enum
-from sqlalchemy import UniqueConstraint
+from database import Base
+from datetime import datetime
+from sqlalchemy import DateTime
 
+class EmailVerificationToken(Base):
+    __tablename__ = "email_verification_tokens"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    token_hash = Column(String, nullable=False, unique=True)
+    expires_at = Column(DateTime, nullable=False)
+    used = Column(Boolean, nullable=False, default=False)
+
+    user = relationship("Users")
 
 class WorkoutSplit(enum.Enum):
     push = "push"
@@ -14,16 +35,15 @@ class WorkoutSplit(enum.Enum):
     full = "full"
     cardio = "cardio"
 
-class Base(DeclarativeBase):
-    pass
 
 class Users(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
     name = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
+    email_verified = Column(Boolean, nullable=False, default=False)
 
     workouts = relationship("Workout", back_populates="user")
 
